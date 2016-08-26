@@ -13,8 +13,9 @@ import numpy as np
 Rosenbrock function https://en.wikipedia.org/wiki/Rosenbrock_function
 f(x,y) = (a-x)^2 + b(y-x^2)^2
 In this class
-a = 0.5
+a = 1
 b = 0.5
+0.5 before first part for convenience
 As result f(x,y) = 0.5(1-x)^2 + 0.5(y-x^2)^2
 """
 
