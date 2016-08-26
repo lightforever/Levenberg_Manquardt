@@ -9,6 +9,8 @@
 from abc import ABCMeta, abstractmethod
 import numpy as np
 
+def is_pos_def(x):
+    return np.all(np.linalg.eigvals(x) > 0)
 
 class Optimizer:
     def __init__(self, function, initialPoint, gradient=None, jacobi=None, hesse=None,
@@ -59,8 +61,14 @@ class NewtonOptimizer(Optimizer):
         self.learningRate = learningRate
 
     def next_point(self):
-        hesseInverse = np.linalg.inv(self.hesse(self.x))
-        nextX = self.x - self.learningRate * np.dot(hesseInverse, self.gradient(self.x))
+        hesse = self.hesse(self.x)
+        # if Hessian matrix if positive - Ok, otherwise we are going in wrong direction, changing to gradient descent
+        if is_pos_def(hesse):
+            hesseInverse = np.linalg.inv(hesse)
+            nextX = self.x - self.learningRate * np.dot(hesseInverse, self.gradient(self.x))
+        else:
+            nextX = self.x - self.learningRate * self.gradient(self.x)
+
         return self.move_next(nextX)
 
 
