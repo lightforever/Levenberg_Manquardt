@@ -1,3 +1,11 @@
+# Author: Evgeny Semyonov <DragonSlights@yandex.ru>
+# Repository: https://github.com/lightforever/Levenberg_Manquardt
+
+# Licensed under the Apache License, Version 2.0 (the "License").
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+
 import webbrowser
 
 import optimizers
@@ -10,11 +18,19 @@ from os import path
 import functions
 from mpl_toolkits.mplot3d import axes3d, Axes3D
 
+#colors for line plotting
 optimizersColorLookup = {'SteepestDescent': 'green', 'Newton': 'blue', 'NewtonGauss': 'red',
                          'LevenbergMarquardt': 'yellow'}
+
+# we can create new function(which use same interface)
 functionClass = functions.Rosenbrock
 
-
+"""
+Plot function on the interval.
+Plot legend using optimizersColorLookup for optimizers
+Init camera at convenient position
+All it needs is in functionClass
+"""
 def initAxes(optimizers):
     interval = functionClass.interval
     fig = plt.figure()
@@ -35,7 +51,7 @@ def initAxes(optimizers):
 
     return fig, ax
 
-
+# may be list or array
 def is_sequence(arg):
     return isinstance(arg, np.ndarray) or isinstance(arg, list)
 
@@ -44,12 +60,12 @@ def is_sequence(arg):
 printStep = 1
 #work excactly maxIteration count. No rules to stop optimizers
 maxIteration = 100
-# need save images and make GIF after that
+# need save images and make GIF after that. If False it' finish much faster
 needSaveImage = True
 currentIteration = 0
 optimizers = optimizers.getOptimizers(functionClass.function, functionClass.initialPoint, functionClass.gradient,
                                       jacobi=functionClass.jacobi,
-                                      hessian=functionClass.hessian,
+                                      hesse=functionClass.hesse,
                                       interval=functionClass.interval,
                                       function_array=functionClass.function_array
                                       )
